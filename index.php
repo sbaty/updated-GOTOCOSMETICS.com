@@ -1,0 +1,114 @@
+<?php
+ 	$page_title = "Login";  # changes some of <title> in header.php to 'Login'
+	include "includes/header.php"
+?>
+<body style="background-color:powderblue;">
+<script>
+ function hashIt(item){
+ if (document.getElementById("password").value != ''){
+   document.getElementById("password").value = md5(item);
+ }
+}
+</script>
+<main>
+
+<?php
+if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username']))
+{
+  header("Location: shopping.php");
+
+} elseif(!empty($_POST['username']) && !empty($_POST['password']))
+{
+	$username = $_POST['username'];
+	$password = $_POST['password']; 
+	$email = $_POST['email'];
+
+      // temporary until there is a database to compare the password to
+	$checklogin = 1;
+
+
+	if($checklogin == 1){
+	   
+		// set session variable
+	  $_SESSION['Username'] = $username;
+	  $_SESSION['EmailAddress'] = $email;
+	  $_SESSION['LoggedInTime'] = time();
+	  $_SESSION['Password'] = $password;
+
+		header("Location: shopping.php");
+	
+	} else {
+	  echo "<h1>Error</h1>";
+	  echo "<p>Sorry, your account could not be found. Please <a href=\"index.php\">click here to try again</a>.</p>";
+	}
+
+   } else {
+	?>
+
+<div class="container">
+
+	<!-- Add Main Picture -->
+      <img src="./img/cosmetics.jpg" class ="img-responsive" alt="banner" width="500px" height="300px">
+   
+
+	<br><br>
+	<!-- Login Title Text -->
+		<div class="col-md-6 col-md-offset-3 text-center">
+			<h1>Member Login</h1>
+			<br>
+			<p>Thanks for visiting!</p>
+		</div>
+	</div>
+
+	<!-- Login Form -->
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<form method="post" action="index.php" name="loginform" id="loginform">
+				<br>
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input
+            type="text"
+            class="form-control"
+            id="username"
+	    autocomplete="off"
+            placeholder="Enter your username here"
+            name="username" />
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input
+            type="password"
+            class="form-control"
+            id="password"
+            autocomplete="off"
+            placeholder="Enter your password here"
+            name="password" 
+	    onchange="hashIt(this.value)"/>
+
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input
+            type="email"
+            class="form-control"
+            id="email"
+            autocomplete="off"
+            placeholder="Enter your email here"
+            name="email" />
+
+				</div>
+				<input type="submit" class="btn btn-success btn-lg" name="login" id="login" value="Login"/>
+			</form>
+		</div>
+	</div>
+</div>
+
+</main>
+<?php
+	include('includes/footer.php');
+}
+?>
+
+
+</body>
+</html>
